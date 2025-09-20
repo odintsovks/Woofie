@@ -1,0 +1,6 @@
+[submodule "woofie-client"]
+	path = woofie-client
+	url = git@github.com:odintsovks/Woofie-Client.git
+[submodule "woofie-server"]
+	path = woofie-server
+	url = git@github.com:odintsovks/Woofie-Server.git

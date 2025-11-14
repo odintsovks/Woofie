@@ -1,0 +1,58 @@
+@startuml
+'src: https://jee.gr/database-modeling-tutorial-using-plantuml/'
+!define pk(x) <b><color:#b8861b><&key></color> x</b>
+!define fk(x) <color:#aaaaaa><&key></color> x
+!define col(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+table(Units) {
+  pk(id): UUID <<PK>>
+  --
+  fk(latest_version_id): UUID <<FK>>
+}
+table(UUV) {
+  pk("unit_id, version_id"): UUID <<PK>>
+  --
+  fk(unit_id): UUID <<FK>>
+  fk(version_id): UUID <<FK>>
+}
+table(UnitVersions) {
+  pk(id): UUID <<PK>>
+  --
+  col(source_text): TEXT
+  col(target_text): TEXT
+  col(timestamp): DATETIME
+}
+table(UnitConnections) {
+  pk("lhs_id, rhs_id"): UUID <<PK>>
+  --
+  fk(lhs_id): UUID <<FK>>
+  fk(rhs_id): UUID <<FK>>
+  col(timestamp): DATETIME
+}
+Units ||..|{ UUV
+UUV ||..|| UnitVersions
+Units ||..|| UnitVersions
+Units ||..|{ UnitConnections
+table(GlossaryEntries) {
+  pk(id): UUID <<PK>>
+  --
+  fk(latest_version_id): UUID <<FK>>
+}
+table(GlossaryVersions) {
+  pk(id): UUID <<PK>>
+  --
+  col(source_term): TEXT
+  col(target_term): TEXT
+  col(definiton): TEXT
+  col(timestamp): DATETIME
+}
+table(GGV) {
+  pk("glossary_entry_id, version_id"): UUID <<PK>>
+  --
+  fk(glossary_entry_id): UUID <<FK>>
+  fk(version_id): UUID <<FK>>
+}
+GlossaryEntries ||..|{ GGV
+GGV ||..|| GlossaryVersions
+GlossaryEntries ||..|| GlossaryVersions
+@enduml
